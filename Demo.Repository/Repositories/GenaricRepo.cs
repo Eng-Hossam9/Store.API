@@ -1,5 +1,6 @@
 ﻿using Demo.Core.Models;
 using Demo.Core.RepositoriesInterFaces;
+using Demo.Core.Specifications;
 using Demo.Repository.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,28 +20,14 @@ namespace Demo.Repository.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity,TKey> spec)
         {
-            if (typeof(TEntity) == typeof(Product))
-            {
-
-                return (IEnumerable<TEntity>)await _context.Products.Include(p => p.Brand).Include(p => p.Type).ToListAsync();
-            }
-
-            return await _context.Set<TEntity>().ToListAsync();
+            return await ApplyEvaluate(spec).ToListAsync();
         }
 
-        public async Task<TEntity> GetByIdAsync(TKey id)
+        public async Task<TEntity> GetByIdAsync(ISpecifications<TEntity, TKey> spec)
         {
-            if (typeof(TEntity) == typeof(Product))
-            {
-
-                var result = await (_context.Products.Include(p => p.Brand).Include(p => p.Type).FirstOrDefaultAsync(p => p.Id == id as int?)) as TEntity;
-                return result;
-            }
-
-
-            return await _context.Set<TEntity>().FindAsync(id);
+            return await ApplyEvaluate(spec).FirstOrDefaultAsync();
         }
         public async Task AddAsync(TEntity entity)
         {
@@ -59,6 +46,10 @@ namespace Demo.Repository.Repositories
         }
 
 
+        private IQueryable<TEntity> ApplyEvaluate(ISpecifications<TEntity, TKey> spec)
+        {
+          return  SpacificationEvaluate<TEntity, TKey>.GenerateQuery(_context.Set<TEntity>(), spec);
+        }
 
 
     }

@@ -1,5 +1,4 @@
 ﻿using Demo.Core.DTO;
-using Demo.Core.DTO.Product;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Demo.Core.ServicesInterFaces
 {
-    public interface IProductService
+    public interface ITypeService
     {
-        Task<IEnumerable<ProductDTO>> GetAllProductAsync();
-        Task<ProductDTO> GetProductByIdAsync(int id);
+        Task<IEnumerable<TypeBrandDTO>> GetAllTypesAsync();
+
     }
 }

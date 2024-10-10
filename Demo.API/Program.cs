@@ -6,6 +6,7 @@ using Demo.Repository.Data.Contexts;
 using Demo.Repository.Data.DataSeed;
 using Demo.Repository.Repositories;
 using Demo.Service.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -42,6 +43,8 @@ namespace Demo.API
             var service = Scope.ServiceProvider;
             var context = service.GetRequiredService<StoreDbContext>();
             var loggerFactory = service.GetRequiredService<ILoggerFactory>();
+
+
             try
             {
                 
