@@ -6,6 +6,8 @@ using Demo.Repository.Data.Contexts;
 using Demo.Repository.Data.DataSeed;
 using Demo.Repository.Repositories;
 using Demo.Service.Services;
+using Demo.Service.Services.Brand;
+using Demo.Service.Services.Type;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -29,8 +31,10 @@ namespace Demo.API
                            option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<IProductService,ProductService>();
+            builder.Services.AddScoped<IBrandService,BrandSevices>();
+            builder.Services.AddScoped<ITypeService,TypeServices>();
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-            builder.Services.AddAutoMapper(m=>m.AddProfile(new ProductProfile()));
+            builder.Services.AddAutoMapper(m=>m.AddProfile(new ProductProfile(builder.Configuration)));
 
 
 
@@ -65,6 +69,7 @@ namespace Demo.API
                 app.UseSwaggerUI();
             }
 
+            app.UseStaticFiles();  
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

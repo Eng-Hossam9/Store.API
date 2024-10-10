@@ -18,4 +18,25 @@
     <ProjectReference Include="..\Demo.Service\Demo.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\images\products\CheesyVegetableLasagna.png" />
+    <None Include="wwwroot\images\products\ChickenMarsala.png" />
+    <None Include="wwwroot\images\products\ChickenTeriyakiNoodles.png" />
+    <None Include="wwwroot\images\products\ChickenTikkaMasala.jpg" />
+    <None Include="wwwroot\images\products\Congee.png" />
+    <None Include="wwwroot\images\products\CreamyGochujangTortellini.png" />
+    <None Include="wwwroot\images\products\CrispyVegetablePakoras.png" />
+    <None Include="wwwroot\images\products\HaluskiNoodles.png" />
+    <None Include="wwwroot\images\products\HeartyVegetableLasagna.png" />
+    <None Include="wwwroot\images\products\ItalianChickenMarinade.png" />
+    <None Include="wwwroot\images\products\ItalianWeddingSoup.png" />
+    <None Include="wwwroot\images\products\Kulfi.png" />
+    <None Include="wwwroot\images\products\PastaSalad.png" />
+    <None Include="wwwroot\images\products\PepperPasta.png" />
+    <None Include="wwwroot\images\products\ShrimpEggFooYoung.png" />
+    <None Include="wwwroot\images\products\TandooriChicken.png" />
+    <None Include="wwwroot\images\products\VegetarianKorma.png" />
+    <None Include="wwwroot\images\products\VegetarianRefriedBeans.png" />
+  </ItemGroup>
+
 </Project>

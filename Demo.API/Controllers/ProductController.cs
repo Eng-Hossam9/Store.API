@@ -9,11 +9,18 @@ namespace Demo.API.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _product;
+        private readonly ITypeService _Type;
+        private readonly IBrandService _Brand;
 
-        public ProductController(IProductService product)
+        public ProductController(IProductService product, ITypeService type, IBrandService brand)
         {
             _product = product;
+            _Type = type;
+            _Brand = brand;
         }
+
+      
+
         [HttpGet]
         public async Task<IActionResult> GetAllProduct()
         {
@@ -25,14 +32,14 @@ namespace Demo.API.Controllers
         [HttpGet("AllBrands")]
         public async Task<IActionResult> GetAllBrands()
         {
-            var Result = await _product.GetAllBrandsAsync();
+            var Result = await _Brand.GetAllBrandsAsync();
             return Ok(Result);
 
         }
         [HttpGet("AllType")]
         public async Task<IActionResult> GetAllType()
         {
-            var Result = await _product.GetAllTypesAsync();
+            var Result = await _Type.GetAllTypesAsync();
             return Ok(Result);
 
         }
