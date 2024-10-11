@@ -20,7 +20,7 @@ namespace Demo.Repository.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity,TKey> spec)
+        public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> spec)
         {
             return await ApplyEvaluate(spec).ToListAsync();
         }
@@ -46,9 +46,16 @@ namespace Demo.Repository.Repositories
         }
 
 
+
+        public async Task<int> CountAsync(ISpecifications<TEntity, TKey> spec)
+        {
+            return await ApplyEvaluate(spec).CountAsync();
+                }
+
+
         private IQueryable<TEntity> ApplyEvaluate(ISpecifications<TEntity, TKey> spec)
         {
-          return  SpacificationEvaluate<TEntity, TKey>.GenerateQuery(_context.Set<TEntity>(), spec);
+            return SpacificationEvaluate<TEntity, TKey>.GenerateQuery(_context.Set<TEntity>(), spec);
         }
 
 

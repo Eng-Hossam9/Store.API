@@ -2,6 +2,8 @@
 using Demo.Core.DTO;
 using Demo.Core.DTO.Product;
 using Demo.Core.Models;
+using Demo.Core.productParams;
+using Demo.Core.ProductResponse;
 using Demo.Core.RepositoriesInterFaces;
 using Demo.Core.ServicesInterFaces;
 using Demo.Core.Specifications;
@@ -31,9 +33,9 @@ namespace Demo.Service.Services
 
        
 
-        public async Task<IEnumerable<ProductDTO>> GetAllProductAsync()
+        public async Task<ProductRespons<ProductDTO>> GetAllProductAsync(ProductParams productParams)
         {
-            var productspec = new ProductSpecification();
+            var productspec = new ProductSpecification(productParams);
 
 
             var ProductRepo = _unitOfWork.CreateRepository<Product, int>();
@@ -42,7 +44,11 @@ namespace Demo.Service.Services
 
             var ProductDTO = _mapper.Map<IEnumerable<ProductDTO>>(Product);
 
-            return ProductDTO;
+            var countspec = new ProductsCount(productParams);
+            var count =await _unitOfWork.CreateRepository<Product, int>().CountAsync(countspec);
+            
+
+            return new ProductRespons<ProductDTO>(productParams.pageSize.Value, productParams.pageIndex.Value, count, ProductDTO);
         }
 
     

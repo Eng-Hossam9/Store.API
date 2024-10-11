@@ -13,7 +13,15 @@ namespace Demo.Core.Specifications
         public Expression<Func<TEntity, bool>> Conditions { get; set; }
         public List<Expression<Func<TEntity, object>>> Includes { get; set; }
 
-        
+        public Expression<Func<TEntity, object>> Orderby { get; set; }
+
+        public Expression<Func<TEntity, object>> OrderbyDesc { get; set; }
+
+        public int? Take { get; set; }
+        public int? Skip { get; set; }
+        public bool IsPagination { get; set; }
+
+
 
     }
 }

@@ -20,10 +20,25 @@ namespace Demo.Repository
                 Query= Query.Where(spec.Conditions);
             }
 
+            if (spec.Orderby is not null) 
+            {
+                Query = Query.OrderBy(spec.Orderby);
+            }
+
+            if (spec.OrderbyDesc is not null)
+            {
+                Query = Query.OrderByDescending(spec.OrderbyDesc);
+            }
+            if (spec.IsPagination)
+            {
+                Query=Query.Skip(spec.Skip.Value).Take(spec.Take.Value);
+            }
             if (spec.Includes.Count > 0)
             {
-                Query=spec.Includes.Aggregate(Query,(CurrentQuery,QueryExpression)=>CurrentQuery.Include(QueryExpression));
+                Query = spec.Includes.Aggregate(Query, (CurrentQuery, QueryExpression) => CurrentQuery.Include(QueryExpression));
             }
+
+
 
             return Query;
         }

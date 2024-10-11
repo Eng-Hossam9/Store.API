@@ -1,5 +1,7 @@
 ﻿using Demo.Core.DTO;
 using Demo.Core.DTO.Product;
+using Demo.Core.productParams;
+using Demo.Core.ProductResponse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ namespace Demo.Core.ServicesInterFaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<ProductDTO>> GetAllProductAsync();
+        Task<ProductRespons<ProductDTO>> GetAllProductAsync(ProductParams productParams);
         Task<ProductDTO> GetProductByIdAsync(int id);
     }
 }
