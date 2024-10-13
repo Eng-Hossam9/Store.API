@@ -1,4 +1,6 @@
 
+using Demo.API.Errors;
+using Demo.API.Middlewares;
 using Demo.Core.Mapping;
 using Demo.Core.RepositoriesInterFaces;
 using Demo.Core.ServicesInterFaces;
@@ -9,6 +11,7 @@ using Demo.Service.Services;
 using Demo.Service.Services.Brand;
 using Demo.Service.Services.Type;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -38,15 +41,32 @@ namespace Demo.API
 
 
 
-            
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = (actionContext) =>
+                {
+                    var errors= actionContext.ModelState.Where(e=>e.Value.Errors.Count()>0)
+                                                        .SelectMany(e=>e.Value.Errors)
+                                                        .Select(e=>e.ErrorMessage).ToList();
+
+                    var respons = new ApiValidationErrorResponse()
+                    {
+                        Errors = errors
+                    };
+
+                    return new BadRequestObjectResult(respons);
+                };
+            });
 
             var app = builder.Build();
 
 
+            app.UseMiddleware <ExceptionMiddleware> ();
+
             using var Scope = app.Services.CreateScope();
             var service = Scope.ServiceProvider;
             var context = service.GetRequiredService<StoreDbContext>();
-            var loggerFactory = service.GetRequiredService<ILoggerFactory>();
+            var loggerFactory = service.GetRequiredService<ILoggerFactory>();  
 
 
             try
@@ -68,6 +88,7 @@ namespace Demo.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseStatusCodePagesWithRedirects("/error/{0}");
 
             app.UseStaticFiles();  
             app.UseHttpsRedirection();

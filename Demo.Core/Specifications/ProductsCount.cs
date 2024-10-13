@@ -25,3 +25,5 @@ namespace Demo.Core.Specifications
         }
     }
 }
+
+
