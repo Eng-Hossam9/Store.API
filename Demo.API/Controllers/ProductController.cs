@@ -1,4 +1,5 @@
-﻿using Demo.Core.DTO.Product;
+﻿using Demo.API.Attributes;
+using Demo.Core.DTO.Product;
 using Demo.Core.productParams;
 using Demo.Core.ProductResponse;
 using Demo.Core.ServicesInterFaces;
@@ -25,6 +26,7 @@ namespace Demo.API.Controllers
 
 
         [HttpGet]
+        [Cache(100)]
         public async Task<IActionResult> GetAllProduct([FromQuery]ProductParams productParams)
         {
             var Result = await _product.GetAllProductAsync(productParams);

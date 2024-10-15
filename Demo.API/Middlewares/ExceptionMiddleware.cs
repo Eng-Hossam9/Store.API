@@ -31,7 +31,13 @@ namespace Demo.API.Middlewares
                 var exception = _environment.IsDevelopment() ? new ApiExceptionServer(StatusCodes.Status500InternalServerError, ex.Message, ex.StackTrace?.ToString() )
                     : new ApiExceptionServer(StatusCodes.Status500InternalServerError);
 
-              var Response= JsonSerializer.Serialize(exception);
+                var option = new JsonSerializerOptions()
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                };
+
+
+                var Response = JsonSerializer.Serialize(exception, option);
                await context.Response.WriteAsync(Response);
             }
         }

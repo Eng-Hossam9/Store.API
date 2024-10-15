@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Demo.API.Errors;
 using Demo.Repository.Repositories.Baskets;
 using StackExchange.Redis;
+using Demo.Service.Services.Caches;
 
 namespace Demo.API.ProgramConfiguration
 
@@ -62,6 +63,7 @@ namespace Demo.API.ProgramConfiguration
             services.AddScoped<ITypeService, TypeServices>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IBasketRepository,BasketRepository>();
+            services.AddScoped<IcacheService,CacheService>();
 
             return services;
         }

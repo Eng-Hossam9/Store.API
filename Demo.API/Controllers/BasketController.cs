@@ -20,11 +20,13 @@ namespace Demo.API.Controllers
            _basket = basket;
             _mapper = mapper;
         }
-        [HttpGet]
+
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetBasket(string id)
         {
             if (id == null) { return BadRequest(new ApiErrorResponse(400)); }
 
+            
             var basket =await _basket.GetBasketAsync(id);
 
             if (basket == null)

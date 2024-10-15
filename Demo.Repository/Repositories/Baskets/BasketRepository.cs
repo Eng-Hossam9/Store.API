@@ -22,7 +22,7 @@ namespace Demo.Repository.Repositories.Baskets
         public async Task<bool> DeleteBasketAsync(string BasketId)
         {
           return await  _DataBase.KeyDeleteAsync(BasketId);
-                }
+        }
 
         public async Task<CustomerBasket?> GetBasketAsync(string BasketId)
         {
