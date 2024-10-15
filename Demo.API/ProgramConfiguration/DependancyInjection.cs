@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Demo.Core.Mapping;
 using Microsoft.AspNetCore.Mvc;
 using Demo.API.Errors;
+using Demo.Repository.Repositories.Baskets;
+using StackExchange.Redis;
 
 namespace Demo.API.ProgramConfiguration
 
@@ -23,6 +25,7 @@ namespace Demo.API.ProgramConfiguration
             services.UserDefiendService();
             services.MapperService(configuration);
             services.InvalidModelstateResponseService(configuration);
+           services.RedisService(configuration);
             return services;
         }
 
@@ -58,6 +61,8 @@ namespace Demo.API.ProgramConfiguration
             services.AddScoped<IBrandService, BrandSevices>();
             services.AddScoped<ITypeService, TypeServices>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IBasketRepository,BasketRepository>();
+
             return services;
         }
 
@@ -65,6 +70,7 @@ namespace Demo.API.ProgramConfiguration
         {
 
             services.AddAutoMapper(m => m.AddProfile(new ProductProfile(configuration)));
+            services.AddAutoMapper(m => m.AddProfile(new CustomerBasketProfile()));
 
             return services;
         }
@@ -96,6 +102,18 @@ namespace Demo.API.ProgramConfiguration
 
 
 
+        private static IServiceCollection RedisService(this IServiceCollection services, IConfiguration configuration)
+        {
+
+            services.AddSingleton<IConnectionMultiplexer>((ServiceProvider) =>
+            {
+              var connection=  configuration.GetConnectionString("RedisConnection");
+                return ConnectionMultiplexer.Connect(connection);
+            });
+         
+
+            return services;
+        }
 
 
 

@@ -22,9 +22,15 @@ namespace Demo.API
     {
         public static async Task Main(string[] args)
         {
+
+
+
+
             var builder = WebApplication.CreateBuilder(args);
 
-         builder.Services.AddDependancy(builder.Configuration);
+            builder.Services.AddDependancy(builder.Configuration);
+
+
 
 
 
@@ -32,7 +38,7 @@ namespace Demo.API
             var app = builder.Build();
 
 
-          await  app.addMiddleWarConfigurationAsync();
+            await app.addMiddleWarConfigurationAsync();
 
             app.Run();
         }
