@@ -15,6 +15,8 @@ using Demo.Service.Services.Caches;
 using Demo.Repository.Identity.Context;
 using Demo.Core.Models.Identity;
 using Microsoft.AspNetCore.Identity;
+using Demo.Service.Services.Token;
+using Demo.Service.Services.Accounts;
 
 namespace Demo.API.ProgramConfiguration
 
@@ -74,6 +76,9 @@ namespace Demo.API.ProgramConfiguration
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IBasketRepository,BasketRepository>();
             services.AddScoped<IcacheService,CacheService>();
+            services.AddScoped<ITokenService,TokenService>();
+            services.AddScoped<IUserService,UserService>();
+
 
             return services;
         }
@@ -133,6 +138,7 @@ namespace Demo.API.ProgramConfiguration
         {
             services.AddIdentity<AppUser, IdentityRole>()
                     .AddEntityFrameworkStores<StoreIdentityDbContext>();
+
 
             return services;
         }
