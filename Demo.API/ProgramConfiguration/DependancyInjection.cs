@@ -12,6 +12,9 @@ using Demo.API.Errors;
 using Demo.Repository.Repositories.Baskets;
 using StackExchange.Redis;
 using Demo.Service.Services.Caches;
+using Demo.Repository.Identity.Context;
+using Demo.Core.Models.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Demo.API.ProgramConfiguration
 
@@ -27,6 +30,7 @@ namespace Demo.API.ProgramConfiguration
             services.MapperService(configuration);
             services.InvalidModelstateResponseService(configuration);
            services.RedisService(configuration);
+            services.IdentityServices();
             return services;
         }
 
@@ -52,6 +56,12 @@ namespace Demo.API.ProgramConfiguration
 
             services.AddDbContext<StoreDbContext>(option =>
                                option.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<StoreIdentityDbContext>(option =>
+                              option.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
+
+
+
             return services;
         }
 
@@ -119,7 +129,13 @@ namespace Demo.API.ProgramConfiguration
 
 
 
+        private static IServiceCollection IdentityServices(this IServiceCollection services)
+        {
+            services.AddIdentity<AppUser, IdentityRole>()
+                    .AddEntityFrameworkStores<StoreIdentityDbContext>();
 
+            return services;
+        }
 
 
 

@@ -1,6 +1,10 @@
 ﻿using Demo.API.Middlewares;
+using Demo.Core.Models.Identity;
 using Demo.Repository.Data.Contexts;
 using Demo.Repository.Data.DataSeed;
+using Demo.Repository.Identity.Context;
+using Demo.Repository.Identity.DataSeed;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.API.ProgramConfiguration
@@ -14,6 +18,8 @@ namespace Demo.API.ProgramConfiguration
             using var Scope = app.Services.CreateScope();
             var service = Scope.ServiceProvider;
             var context = service.GetRequiredService<StoreDbContext>();
+            var Identity = service.GetRequiredService<StoreIdentityDbContext>();
+            var _userManagar = service.GetRequiredService<UserManager<AppUser>>();
             var loggerFactory = service.GetRequiredService<ILoggerFactory>();
 
 
@@ -21,8 +27,10 @@ namespace Demo.API.ProgramConfiguration
             {
 
                 await context.Database.MigrateAsync();
+                await Identity.Database.MigrateAsync();
                 await SeedData.seedDataToDBAsync(context);
-            }
+                await SeedUser.SeedUserDataAsync(_userManagar);
+                    }
             catch (Exception ex)
             {
                 var logger = loggerFactory.CreateLogger<Program>();
