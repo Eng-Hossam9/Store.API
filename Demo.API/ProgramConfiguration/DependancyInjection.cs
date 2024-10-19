@@ -17,6 +17,10 @@ using Demo.Core.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Demo.Service.Services.Token;
 using Demo.Service.Services.Accounts;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace Demo.API.ProgramConfiguration
 
@@ -33,6 +37,7 @@ namespace Demo.API.ProgramConfiguration
             services.InvalidModelstateResponseService(configuration);
            services.RedisService(configuration);
             services.IdentityServices();
+            services.AuthenticationServices(configuration);
             return services;
         }
 
@@ -138,6 +143,33 @@ namespace Demo.API.ProgramConfiguration
         {
             services.AddIdentity<AppUser, IdentityRole>()
                     .AddEntityFrameworkStores<StoreIdentityDbContext>();
+
+
+            return services;
+        }
+
+
+        private static IServiceCollection AuthenticationServices(this IServiceCollection services,IConfiguration configuration)
+        {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme=JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme=JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer=true,
+                    ValidIssuer= configuration["Jwt:Issuer"],
+                    ValidateAudience=true,
+                    ValidAudience= configuration["Jwt:Audience"],
+                    ValidateLifetime=true,
+                    ValidateIssuerSigningKey=true,
+                    IssuerSigningKey= new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:key"]))
+
+                };
+            });
+
 
 
             return services;

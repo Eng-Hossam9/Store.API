@@ -26,14 +26,14 @@ namespace Demo.Service.Services.Token
 
             var authClaims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.GivenName,user.DisplayName),
-                new Claim(ClaimTypes.MobilePhone ,user.PhoneNumber),
+                new Claim("Email", user.Email),
+                new Claim("DisplayName",user.DisplayName),
+                new Claim("MobilePhone" ,user.PhoneNumber),
             };
             var Roles = await _userManager.GetRolesAsync(user);
             foreach (var role in Roles)
             {
-                authClaims.Add(new Claim(ClaimTypes.Role, role));
+                authClaims.Add(new Claim("Role", role));
             }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:key"])); 

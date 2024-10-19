@@ -10,7 +10,7 @@ namespace Demo.Repository.Identity.DataSeed
 {
     public static class SeedUser
     {
-        public static async Task SeedUserDataAsync(UserManager<AppUser> _userManager)
+        public static async Task SeedUserDataAsync(UserManager<AppUser> _userManager, RoleManager<IdentityRole> _roleManager)
         {
             if (_userManager.Users.Count() == 0)
             {
@@ -41,11 +41,16 @@ namespace Demo.Repository.Identity.DataSeed
                         Street = "Marg"
                     }
                 };
-
+                if (!await _roleManager.RoleExistsAsync("Admin"))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole("Admin"));
+                }
                 var result = await _userManager.CreateAsync(newUser, password);
+                
                 if (result.Succeeded)
                 {
                     Console.WriteLine("User created successfully.");
+                   await _userManager.AddToRoleAsync(newUser, "Admin");
                 }
                 else
                 {

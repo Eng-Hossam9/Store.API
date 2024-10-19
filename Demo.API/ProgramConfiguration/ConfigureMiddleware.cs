@@ -20,6 +20,7 @@ namespace Demo.API.ProgramConfiguration
             var context = service.GetRequiredService<StoreDbContext>();
             var Identity = service.GetRequiredService<StoreIdentityDbContext>();
             var _userManagar = service.GetRequiredService<UserManager<AppUser>>();
+            var _RoleManagar = service.GetRequiredService<RoleManager<IdentityRole>>();
             var loggerFactory = service.GetRequiredService<ILoggerFactory>();
 
 
@@ -29,7 +30,7 @@ namespace Demo.API.ProgramConfiguration
                 await context.Database.MigrateAsync();
                 await Identity.Database.MigrateAsync();
                 await SeedData.seedDataToDBAsync(context);
-                await SeedUser.SeedUserDataAsync(_userManagar);
+                await SeedUser.SeedUserDataAsync(_userManagar, _RoleManagar);
                     }
             catch (Exception ex)
             {
@@ -49,6 +50,7 @@ namespace Demo.API.ProgramConfiguration
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

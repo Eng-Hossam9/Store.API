@@ -42,7 +42,7 @@ namespace Demo.Service.Services.Accounts
             var Existuser = await _userManager.FindByEmailAsync(model.Email);
 
             if (Existuser is not null) return null;
-
+             
             var user = new AppUser()
             {
                 Email = model.Email,
