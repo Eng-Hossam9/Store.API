@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Demo.Core.Mapping.Account;
 
 namespace Demo.API.ProgramConfiguration
 
@@ -93,6 +94,7 @@ namespace Demo.API.ProgramConfiguration
 
             services.AddAutoMapper(m => m.AddProfile(new ProductProfile(configuration)));
             services.AddAutoMapper(m => m.AddProfile(new CustomerBasketProfile()));
+            services.AddAutoMapper(m => m.AddProfile(new AddressProfile()));
 
             return services;
         }

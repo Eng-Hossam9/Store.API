@@ -56,6 +56,19 @@ namespace Demo.Repository.Data.DataSeed
                 }
             }
 
+            if (context.deliveryMethods.Count() == 0)
+            {
+                var DeliveryData = await File.ReadAllTextAsync(@"..\Demo.Repository\Data\DataSeed\delivery.json");
+
+                var Delivery = JsonSerializer.Deserialize<List<DeliveryMethod>>(DeliveryData);
+
+                if (Delivery is not null && Delivery.Count() > 0)
+                {
+                    await context.deliveryMethods.AddRangeAsync(Delivery);
+                    await context.SaveChangesAsync();
+                }
+            }
+
         }
     }
 }
