@@ -58,6 +58,15 @@ namespace Demo.Repository.Repositories
             return SpacificationEvaluate<TEntity, TKey>.GenerateQuery(_context.Set<TEntity>(), spec);
         }
 
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+          return await  _context.Set<TEntity>().ToListAsync();
+        }
 
+        public async Task<TEntity> GetByIdAsync(TKey Id)
+        {
+            return await _context.Set<TEntity>().FindAsync(Id);
+
+        }
     }
 }

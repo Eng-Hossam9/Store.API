@@ -30,9 +30,23 @@ namespace Demo.API.ProgramConfiguration
     {
         public static IServiceCollection AddDependancy(this IServiceCollection services, IConfiguration configuration)
         {
+
+
             services.BuiltInServices();
             services.SwagerServices();
             services.DbContextsService(configuration);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:4200")
+                              .AllowAnyHeader()
+                              .AllowAnyMethod()
+                              .AllowCredentials(); 
+                    });
+            });
             services.UserDefiendService();
             services.MapperService(configuration);
             services.InvalidModelstateResponseService(configuration);

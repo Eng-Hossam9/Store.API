@@ -39,12 +39,17 @@ namespace Demo.API.ProgramConfiguration
 
             }
 
+
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
             app.UseStatusCodePagesWithRedirects("/error/{0}");
+
+            app.UseCors("AllowSpecificOrigin");
+
 
             app.UseStaticFiles();
 
