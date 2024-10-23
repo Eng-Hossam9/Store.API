@@ -22,6 +22,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Demo.Core.Mapping.Account;
+using Demo.Core.Mapping.Orders;
+using Demo.Service.Services.Orders;
 
 namespace Demo.API.ProgramConfiguration
 
@@ -98,6 +100,7 @@ namespace Demo.API.ProgramConfiguration
             services.AddScoped<IcacheService,CacheService>();
             services.AddScoped<ITokenService,TokenService>();
             services.AddScoped<IUserService,UserService>();
+            services.AddScoped<IOrderService,OrderService>();
 
 
             return services;
@@ -109,6 +112,9 @@ namespace Demo.API.ProgramConfiguration
             services.AddAutoMapper(m => m.AddProfile(new ProductProfile(configuration)));
             services.AddAutoMapper(m => m.AddProfile(new CustomerBasketProfile()));
             services.AddAutoMapper(m => m.AddProfile(new AddressProfile()));
+            services.AddAutoMapper(m => m.AddProfile(new OrderProfile(configuration)));
+        
+
 
             return services;
         }

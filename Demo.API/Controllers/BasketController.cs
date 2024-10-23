@@ -21,7 +21,7 @@ namespace Demo.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<IActionResult> GetBasket(string id)
         {
             if (id == null) { return BadRequest(new ApiErrorResponse(400)); }

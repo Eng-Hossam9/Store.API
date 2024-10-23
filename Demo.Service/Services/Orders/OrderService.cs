@@ -37,16 +37,26 @@ namespace Demo.Service.Services.Orders
                 }
 
             }
-
-
             var DeliveryMethod = await _unitOfWork.CreateRepository<DeliveryMethod, int>().GetByIdAsync(DeliveryMethodId);
             var subtotatl = Itemes.Sum(i => i.Price * i.Quantity);
-            /// Payment Intent
             var order = new Order(BuyerEmail, ShippingAddres, DeliveryMethod, Itemes, subtotatl, "");
 
             await _unitOfWork.CreateRepository<Order, int>().AddAsync(order);
-            var result = await _unitOfWork.CompletSaveChangesAsync();
-            if (result == 0) return null;
+
+
+            try
+            {
+                var result = await _unitOfWork.CompletSaveChangesAsync();
+                if (result <= 0) return null;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (use a logger or just console for testing)
+                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"Inner Exception: {ex.InnerException?.Message}");
+                return null;
+            }
+         
             return order;
         }
 

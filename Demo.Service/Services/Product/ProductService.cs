@@ -26,11 +26,6 @@ namespace Demo.Service.Services
             _mapper = mapper;
         }
 
-     
-
-       
-
-
        
 
         public async Task<ProductRespons<ProductDTO>> GetAllProductAsync(ProductParams productParams)
@@ -40,7 +35,7 @@ namespace Demo.Service.Services
 
             var ProductRepo = _unitOfWork.CreateRepository<Product, int>();
 
-            var Product = await ProductRepo.GetAllAsync(productspec);
+            var Product = await ProductRepo.GetAllWihSpecAsync(productspec);
 
             var ProductDTO = _mapper.Map<IEnumerable<ProductDTO>>(Product);
 
@@ -57,7 +52,7 @@ namespace Demo.Service.Services
         {
             var productspec = new ProductSpecification(id);
 
-            var product = await _unitOfWork.CreateRepository<Product, int>().GetByIdAsync(productspec);
+            var product = await _unitOfWork.CreateRepository<Product, int>().GetByIdWihSpecAsync(productspec);
 
             var ProductDTO = _mapper.Map<ProductDTO>(product);
 

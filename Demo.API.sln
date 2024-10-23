@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.API", "Demo.API\Demo.API.csproj", "{4EC03220-7D93-40E4-836E-0E24EDBE6784}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.API", "Demo.API\Demo.API.csproj", "{4EC03220-7D93-40E4-836E-0E24EDBE6784}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Core", "Demo.Core\Demo.Core.csproj", "{15D06AD5-E37A-4ED2-B25C-0277F065A2AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Core", "Demo.Core\Demo.Core.csproj", "{15D06AD5-E37A-4ED2-B25C-0277F065A2AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Repository", "Demo.Repository\Demo.Repository.csproj", "{7EF1A5E1-4E61-46C4-B873-D7F51B225BAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Repository", "Demo.Repository\Demo.Repository.csproj", "{7EF1A5E1-4E61-46C4-B873-D7F51B225BAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Service", "Demo.Service\Demo.Service.csproj", "{B0CE7B19-9AF3-4301-BC23-966EBB8CE341}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Service", "Demo.Service\Demo.Service.csproj", "{B0CE7B19-9AF3-4301-BC23-966EBB8CE341}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

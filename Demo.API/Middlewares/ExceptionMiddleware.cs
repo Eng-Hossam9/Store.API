@@ -29,7 +29,7 @@ namespace Demo.API.Middlewares
                 context.Response.ContentType = "application/json"; 
                 context.Response.StatusCode=StatusCodes.Status500InternalServerError;
                 var exception = _environment.IsDevelopment() ? new ApiExceptionServer(StatusCodes.Status500InternalServerError, ex.Message, ex.StackTrace?.ToString() )
-                    : new ApiExceptionServer(StatusCodes.Status500InternalServerError);
+                                                             : new ApiExceptionServer(StatusCodes.Status500InternalServerError);
 
                 var option = new JsonSerializerOptions()
                 {

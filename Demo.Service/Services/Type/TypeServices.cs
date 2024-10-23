@@ -27,7 +27,7 @@ namespace Demo.Service.Services.Type
         {
             var typespec = new BaseSpecification<ProductType, int>();
             var TypeRepo = _unitOfWork.CreateRepository<ProductType, int>();
-            var types = await TypeRepo.GetAllAsync(typespec);
+            var types = await TypeRepo.GetAllWihSpecAsync(typespec);
             var typesDTO = _mapper.Map<IEnumerable<TypeBrandDTO>>(types);
             return typesDTO;
         }

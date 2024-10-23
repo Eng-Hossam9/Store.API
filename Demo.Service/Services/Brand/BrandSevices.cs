@@ -27,7 +27,7 @@ namespace Demo.Service.Services.Brand
         public async Task<IEnumerable<TypeBrandDTO>> GetAllBrandsAsync()
         {
             var brandspec = new BaseSpecification<ProductBrand, int>();
-            var Brands = await _unitOfWork.CreateRepository<ProductBrand, int>().GetAllAsync(brandspec);
+            var Brands = await _unitOfWork.CreateRepository<ProductBrand, int>().GetAllWihSpecAsync(brandspec);
             return _mapper.Map<IEnumerable<TypeBrandDTO>>(Brands);
 
         }

@@ -20,12 +20,12 @@ namespace Demo.Repository.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> spec)
+        public async Task<IEnumerable<TEntity>> GetAllWihSpecAsync(ISpecifications<TEntity, TKey> spec)
         {
             return await ApplyEvaluate(spec).ToListAsync();
         }
 
-        public async Task<TEntity> GetByIdAsync(ISpecifications<TEntity, TKey> spec)
+        public async Task<TEntity> GetByIdWihSpecAsync(ISpecifications<TEntity, TKey> spec)
         {
             return await ApplyEvaluate(spec).FirstOrDefaultAsync();
         }
