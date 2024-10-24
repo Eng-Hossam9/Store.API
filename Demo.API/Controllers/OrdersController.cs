@@ -34,10 +34,34 @@ namespace Store.API.Controllers
             if (UserEmail is null) return Unauthorized(new ApiErrorResponse(401));
             var AddressShipping = _mapper.Map<Address>(Model.ShippingAddress);
             var order = await _orderService.CreateOrderAsync(UserEmail, Model.BasketId, Model.DeliveryMethodId, AddressShipping);
-            if (order is null) return BadRequest(new ApiErrorResponse(400));
+            if (order is null) return NotFound(new ApiErrorResponse(404));
             return Ok(_mapper.Map<OrderResponseDTO>(order));
 
         }
 
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetOrderForSpacificUser()
+        {
+            var UserEmail = User.FindFirstValue("Email");
+            if (UserEmail is null) return Unauthorized(new ApiErrorResponse(401));
+            var order = await _orderService.GetOrdersForSpecificUserAsync(UserEmail);
+            if (order is null) return NotFound(new ApiErrorResponse(404));
+            return Ok(_mapper.Map<IEnumerable<OrderResponseDTO>>(order));
+
+        }
+
+        [Authorize]
+        [HttpGet("{orderId}")]
+        public async Task<IActionResult> GetOrderById(int orderId)
+        {
+            var UserEmail = User.FindFirstValue("Email");
+            if (UserEmail is null) return Unauthorized(new ApiErrorResponse(401));
+            var order = await _orderService.GetOrderByIdAsync(UserEmail,orderId);
+            if (order is null) return NotFound(new ApiErrorResponse(404));
+            return Ok(_mapper.Map<OrderResponseDTO>(order));
+
+        }
     }
 }
