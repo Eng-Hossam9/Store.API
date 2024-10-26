@@ -60,7 +60,7 @@ namespace Store.API.Controllers
             var UserEmail = User.FindFirstValue("Email");
             if (UserEmail is null) return Unauthorized(new ApiErrorResponse(401));
             var order = await _orderService.GetOrderByIdAsync(UserEmail,orderId);
-            if (order is null) NotFound(new ApiErrorResponse(404));
+            if (order is null) return NotFound(new ApiErrorResponse(404));
             return Ok(_mapper.Map<OrderResponseDTO>(order));
 
         }

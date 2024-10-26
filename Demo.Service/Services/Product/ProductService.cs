@@ -20,13 +20,13 @@ namespace Demo.Service.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ProductService(IUnitOfWork unitOfWork,IMapper mapper)
+        public ProductService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-       
+
 
         public async Task<ProductRespons<ProductDTO>> GetAllProductAsync(ProductParams productParams)
         {
@@ -40,13 +40,14 @@ namespace Demo.Service.Services
             var ProductDTO = _mapper.Map<IEnumerable<ProductDTO>>(Product);
 
             var countspec = new ProductsCount(productParams);
-            var count =await _unitOfWork.CreateRepository<Product, int>().CountAsync(countspec);
-            
+            var count = await _unitOfWork.CreateRepository<Product, int>().CountAsync(countspec);
 
+           
             return new ProductRespons<ProductDTO>(productParams.pageSize.Value, productParams.pageIndex.Value, count, ProductDTO);
         }
 
-    
+
+
 
         public async Task<ProductDTO> GetProductByIdAsync(int id)
         {
@@ -57,11 +58,9 @@ namespace Demo.Service.Services
             var ProductDTO = _mapper.Map<ProductDTO>(product);
 
             return ProductDTO;
-
-
         }
 
 
-     
+
     }
 }

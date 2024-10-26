@@ -2,6 +2,7 @@
 using Demo.Core.RepositoriesInterFaces;
 using Demo.Core.ServicesInterFaces;
 using Demo.Core.Specifications;
+using Demo.Service.Services.Payment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,13 @@ namespace Demo.Service.Services.Orders
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IBasketRepository _basketRepository;
+        private readonly IPaymentService _paymentService;
 
-        public OrderService(IUnitOfWork unitOfWork, IBasketRepository basketRepository)
+        public OrderService(IUnitOfWork unitOfWork, IBasketRepository basketRepository, IPaymentService paymentService)
         {
             _unitOfWork = unitOfWork;
             _basketRepository = basketRepository;
+            _paymentService = paymentService;
         }
         public async Task<Order> CreateOrderAsync(string BuyerEmail, string BasketId, int DeliveryMethodId, Address ShippingAddres)
         {
@@ -39,7 +42,16 @@ namespace Demo.Service.Services.Orders
             }
             var DeliveryMethod = await _unitOfWork.CreateRepository<DeliveryMethod, int>().GetByIdAsync(DeliveryMethodId);
             var subtotatl = Itemes.Sum(i => i.Price * i.Quantity);
-            var order = new Order(BuyerEmail, ShippingAddres, DeliveryMethod, Itemes, subtotatl, "");
+            if (!string.IsNullOrEmpty(BasketItem.PaymentIntentId))
+            {
+                var orderspecwithpayment = new OrderSpecificationWithPayment(BasketItem.PaymentIntentId);
+                var Exist = await _unitOfWork.CreateRepository<Order, int>().GetByIdWihSpecAsync(orderspecwithpayment);
+                _unitOfWork.CreateRepository<Order, int>().Delete(Exist);
+            }
+            var basket =await _paymentService.CreateOrUpdatePaymentIntentId(BasketId);
+
+
+            var order = new Order(BuyerEmail, ShippingAddres, DeliveryMethod, Itemes, subtotatl, basket.PaymentIntentId);
 
             await _unitOfWork.CreateRepository<Order, int>().AddAsync(order);
 
@@ -51,12 +63,12 @@ namespace Demo.Service.Services.Orders
             }
             catch (Exception ex)
             {
-                // Log the exception (use a logger or just console for testing)
+
                 Console.WriteLine($"Error: {ex.Message}");
                 Console.WriteLine($"Inner Exception: {ex.InnerException?.Message}");
                 return null;
             }
-         
+
             return order;
         }
 
@@ -64,7 +76,7 @@ namespace Demo.Service.Services.Orders
         {
             var spec = new OrderSpecification(BuyerEmail, OrderId);
 
-            var Order =await _unitOfWork.CreateRepository<Order, int>().GetByIdWihSpecAsync(spec);
+            var Order = await _unitOfWork.CreateRepository<Order, int>().GetByIdWihSpecAsync(spec);
             if (Order is null) return null;
             return Order;
         }

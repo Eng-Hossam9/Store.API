@@ -49,7 +49,6 @@ namespace Demo.API.Controllers
         {
             var Result = await _Type.GetAllTypesAsync();
             return Ok(Result);
-
         }
 
         [HttpGet("{id}")]

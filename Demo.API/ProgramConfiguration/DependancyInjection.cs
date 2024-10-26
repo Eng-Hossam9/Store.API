@@ -24,6 +24,7 @@ using System.Text;
 using Demo.Core.Mapping.Account;
 using Demo.Core.Mapping.Orders;
 using Demo.Service.Services.Orders;
+using Demo.Service.Services.Payment;
 
 namespace Demo.API.ProgramConfiguration
 
@@ -101,6 +102,7 @@ namespace Demo.API.ProgramConfiguration
             services.AddScoped<ITokenService,TokenService>();
             services.AddScoped<IUserService,UserService>();
             services.AddScoped<IOrderService,OrderService>();
+            services.AddScoped<IPaymentService,PaymentService>();
 
 
             return services;
