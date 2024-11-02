@@ -27,7 +27,7 @@ namespace Demo.Service.Services.Payment
         public async Task<CustomerBasket> CreateOrUpdatePaymentIntentId(string BasketId)
         {
 
-            StripeConfiguration.ApiKey = _configuration["Stripe:Secretkey"];
+            StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
 
             var PaymentService = new PaymentIntentService();
                 
@@ -40,11 +40,12 @@ namespace Demo.Service.Services.Payment
                 var delivary = await _unitOfWork.CreateRepository<DeliveryMethod, int>().GetByIdAsync(basket.DeliveryMethodId.Value);
                 shippingprice = delivary.Cost;
             }
-            if (basket.Items.Count > 0)
+            if (basket.Items.Count() > 0)
             {
                 foreach (var item in basket.Items)
                 {
                 var product = await _unitOfWork.CreateRepository<Product, int>().GetByIdAsync(item.Id);
+
                     if(item.Price != product.Price)
                     {
                         item.Price = product.Price;
@@ -53,7 +54,8 @@ namespace Demo.Service.Services.Payment
                 }
 
             }
-           var subtotal= basket.Items.Sum(i => (i.Price) * (i.Quantity));
+           var subtotal= basket.Items.Sum(i => i.Price * i.Quantity);
+
             PaymentIntent paymentIntent;
 
             if (string.IsNullOrEmpty(basket.PaymentIntentId))
@@ -61,7 +63,7 @@ namespace Demo.Service.Services.Payment
                 var option = new PaymentIntentCreateOptions()
                 {
                     Amount = (long)(subtotal * 100 + shippingprice * 100),
-                    PaymentMethodTypes = new List<string>() { "card"},
+                    PaymentMethodTypes = new List<string>() {"card"},
                     Currency="usd"
                 }; 
                 paymentIntent =await PaymentService.CreateAsync(option);
@@ -86,5 +88,8 @@ namespace Demo.Service.Services.Payment
             if (basket == null) return null;
             return basket;  
         }
+
+
+        
     }
 }

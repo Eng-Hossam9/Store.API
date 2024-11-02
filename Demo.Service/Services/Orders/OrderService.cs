@@ -38,16 +38,23 @@ namespace Demo.Service.Services.Orders
                     Itemes.Add(orderitem);
 
                 }
-
+                
             }
             var DeliveryMethod = await _unitOfWork.CreateRepository<DeliveryMethod, int>().GetByIdAsync(DeliveryMethodId);
             var subtotatl = Itemes.Sum(i => i.Price * i.Quantity);
+
             if (!string.IsNullOrEmpty(BasketItem.PaymentIntentId))
             {
                 var orderspecwithpayment = new OrderSpecificationWithPayment(BasketItem.PaymentIntentId);
                 var Exist = await _unitOfWork.CreateRepository<Order, int>().GetByIdWihSpecAsync(orderspecwithpayment);
-                _unitOfWork.CreateRepository<Order, int>().Delete(Exist);
+
+                if (Exist != null)
+                {
+                    _unitOfWork.CreateRepository<Order, int>().Delete(Exist);
+                }
             }
+
+
             var basket =await _paymentService.CreateOrUpdatePaymentIntentId(BasketId);
 
 

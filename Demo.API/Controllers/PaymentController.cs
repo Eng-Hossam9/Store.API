@@ -20,9 +20,13 @@ namespace Demo.API.Controllers
         [Authorize]
         public async Task<IActionResult> CreatePaymentIntent(string basketId)
         {
-            if (basketId is null) return BadRequest(error: new ApiErrorResponse(StatusCodes.Status400BadRequest));
+            if (basketId is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+
             var basket = await _paymentService.CreateOrUpdatePaymentIntentId(basketId);
-            if (basket is null) return BadRequest(error: new ApiErrorResponse(StatusCodes.Status400BadRequest)); return Ok(basket);
+
+            if (basket is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+             
+            return Ok(basket);
         }
     }
 }
